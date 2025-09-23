@@ -49,6 +49,8 @@ pip install "django==5.0.*" Pillow tzdata
 python manage.py makemigrations
 python manage.py migrate
 
+PS: Pedro: Vou migrar o banco SQL para PostgreSQL 
+
 5. Criar superusuário
 python manage.py createsuperuser
 
