@@ -1,0 +1,55 @@
+# Project Music Band Publisher
+
+## Sobre o projeto
+
+Este projeto é uma plataforma para publicação e gerenciamento de bandas de música.  
+Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em Django e PostgreSQL.
+
+## Progresso até agora
+
+- Inicialização do projeto Django com `django-admin startproject music_band`.
+- Criação dos apps principais: `core` e `base`.
+- Configuração do banco de dados PostgreSQL no `settings.py`:
+  - Banco: `musicbanddb`
+  - Usuário: `postgres`
+  - Senha: `admin`
+  - Host: `localhost`
+  - Porta: `5432`
+- Criação manual do banco de dados `musicbanddb` no PostgreSQL.
+- Execução das migrações iniciais com `python manage.py    makemigrations` e finalizadas com `python manage.py migrate`.
+- Implementação da view `home` em `core/views.py` para renderizar a página inicial.
+- Configuração das rotas em `core/urls.py`:
+  - URL raiz (`/`) aponta para a view `home`.
+- Inclusão das URLs do app `core` no arquivo principal `music_band/urls.py`.
+- Criação do template `index.html` para a página inicial.
+- Testes de acesso à página inicial realizados com sucesso.
+
+## Como rodar o projeto
+
+1. Instale as dependências:
+   ```
+   pip install -r requirements.txt
+   ```
+2. Crie o banco de dados `musicbanddb` no PostgreSQL.
+3. Execute as migrações:
+   ```
+   python manage.py migrate
+   ```
+4. Inicie o servidor de desenvolvimento:
+   ```
+   python manage.py runserver
+   ```
+5. Acesse [http://localhost:8000](http://localhost:8000) para visualizar a página inicial.
+
+## Próximos passos
+
+- Definir os modelos das bandas e usuários.
+- Implementar autenticação e cadastro.
+- Criar páginas para cadastro e listagem de bandas.
+- Dividir tarefas entre os membros do grupo.
+- Documentar decisões e dúvidas para facilitar o trabalho em equipe.
+-Formentar a analise de requisitos em coadunação com o professor.
+
+---
+
+**Colabore, tire dúvidas e compartilhe ideias!**
