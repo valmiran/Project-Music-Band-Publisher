@@ -4,8 +4,6 @@
 
 Este projeto é uma plataforma para publicação e gerenciamento de bandas de música.  
 Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em Django e PostgreSQL.
-
-<br>
 <br>
 
 ## Progresso até agora
