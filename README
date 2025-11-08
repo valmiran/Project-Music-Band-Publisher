@@ -52,4 +52,52 @@ Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em
 
 ---
 
+## 🗂️ Modelo de Dados (Banco de Dados)
+
+Abaixo estão descritas as principais tabelas do sistema e as decisões técnicas tomadas para sua implementação.
+
+### 📋 Estrutura das Tabelas
+
+#### 1. Usuário (`Usuario`)
+Estende o modelo padrão de autenticação do Django (`AbstractUser`).
+- **Motivo:** Aproveitar todo o sistema de segurança, login e criptografia de senhas que o Django já oferece, adicionando apenas os campos personalizados necessários.
+- **Campos Principais:**
+  - `username`, `email`, `password` (herdados do Django)
+  - `tipo`: Define o perfil de acesso (Admin, Membro da Banda, Visitante).
+
+#### 2. Projeto (`Projeto`)
+Armazena os grandes projetos da banda.
+- **Campos Principais:** `titulo`, `descricao`, `data_inicio`, `data_fim`, `status` (Em andamento, Concluído, Cancelado).
+- **Relação:** Vinculado ao usuário que o criou (`criado_por`).
+
+#### 3. Evento (`Evento`)
+Registra eventos específicos (shows, ensaios), que podem ou não fazer parte de um projeto maior.
+- **Campos Principais:** `titulo`, `descricao`, `data`, `local`, `status` (Planejado, Realizado, Cancelado).
+- **Relações:**
+  - Pode ser vinculado a um `Projeto` (opcional).
+  - Vinculado ao usuário criador (`criado_por`).
+
+#### 4. Artista (`Artista`)
+Perfil estendido para usuários que são membros da banda.
+- **Motivo:** Separar dados sensíveis de login (tabela Usuário) de dados públicos do perfil artístico.
+- **Campos Principais:** `genero_musical`, `biografia`, `foto_perfil`.
+- **Relação:** Conexão 1-para-1 com `Usuario` e N-para-N com `Instrumento`.
+
+#### 5. Instrumento (`Instrumento`)
+Lista de instrumentos que os artistas podem tocar.
+- **Campos Principais:** `nome`, `tipo` (Corda, Sopro, Percussão, etc.).
+
+#### 6. Notificação (`Notificacao`)
+Sistema para alertar usuários sobre novidades.
+- **Campos Principais:** `mensagem`, `data_hora`, `visualizada` (bool).
+- **Relações:** Pode apontar para um `Projeto` ou `Evento` relacionado.
+
+#### 7. Atualização (`Atualizacao`)
+Histórico de mudanças feitas em projetos ou eventos.
+- **Decisão Técnica:** Uso de **Relação Polimórfica** (`GenericForeignKey`).
+- **Motivo:** Permite que uma única tabela de atualizações sirva tanto para `Projeto` quanto para `Evento`, sem precisar duplicar tabelas ou criar campos vazios.
+
+---
+
+
 **Colabore, tire dúvidas e compartilhe ideias!**
