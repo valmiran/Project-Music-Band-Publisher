@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'musicbanddb',
         'USER': 'postgres',
-        'PASSWORD': 'admin',
+        'PASSWORD': 'post',
         'HOST': 'localhost',
         'PORT': '5432',
         #'ENGINE': 'django.db.backends.sqlite3',
