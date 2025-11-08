@@ -5,6 +5,9 @@
 Este projeto é uma plataforma para publicação e gerenciamento de bandas de música.  
 Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em Django e PostgreSQL.
 
+<br>
+<br>
+
 ## Progresso até agora
 
 - Inicialização do projeto Django com `django-admin startproject music_band`.
@@ -24,6 +27,9 @@ Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em
 - Criação do template `index.html` para a página inicial.
 - Testes de acesso à página inicial realizados com sucesso.
 
+<br>
+<br>
+
 ## Como rodar o projeto
 
 1. Instale as dependências:
@@ -40,6 +46,9 @@ Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em
    python manage.py runserver
    ```
 5. Acesse [http://localhost:8000](http://localhost:8000) para visualizar a página inicial.
+
+<br>
+<br>
 
 ## Próximos passos
 
