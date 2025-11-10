@@ -4,8 +4,6 @@
 
 Este projeto é uma plataforma para publicação e gerenciamento de bandas de música.  
 Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em Django e PostgreSQL.
-
-<br>
 <br>
 
 ## Progresso até agora
@@ -60,6 +58,7 @@ Está sendo desenvolvido em conjunto para fins de aprendizado e colaboração em
 -Formentar a analise de requisitos em coadunação com o professor.
 
 ---
+<br>
 
 ## 🗂️ Modelo de Dados (Banco de Dados)
 
