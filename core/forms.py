@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Usuario,Artista
+from .models import Usuario, Artista, Projeto, Evento
 
 class UsuarioCreationForm(UserCreationForm):
     class Meta:
@@ -9,7 +9,6 @@ class UsuarioCreationForm(UserCreationForm):
         
     def save(self, commit=True):
         user = super().save(commit=False)
-       
         if not user.tipo:
             user.tipo = 'VISITANTE'
         if commit:
@@ -21,11 +20,37 @@ class ArtistaForm(forms.ModelForm):
         model = Artista
         fields = ['genero_musical', 'biografia', 'foto_perfil', 'instrumentos']
         widgets = {
-            'biografia': forms.Textarea(attrs={'rows': 3}),
-            'instrumentos': forms.CheckboxSelectMultiple(), # Checkbox fica melhor para escolher vários
+            'biografia': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'genero_musical': forms.TextInput(attrs={'class': 'form-control'}),
+            'instrumentos': forms.CheckboxSelectMultiple(),
         }
-    
-    
+
+class ProjetoForm(forms.ModelForm):
+    class Meta:
+        model = Projeto
+        fields = ['titulo', 'descricao', 'data_inicio', 'data_fim', 'status']
+        widgets = {
+            'data_inicio': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'data_fim': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'descricao': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+class EventoForm(forms.ModelForm):
+    class Meta:
+        model = Evento
+        fields = ['titulo', 'descricao', 'data', 'local', 'status', 'projeto']
+        widgets = {
+            'data': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'descricao': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'local': forms.TextInput(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-select'}),
+            'projeto': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+
 ''' EXPLICAÇÃO SOBRE UsuarioCreationForm e UserCreationForm:
 1º O que é UsuarioCreationForm?
     R: UsuarioCreationForm é uma classe personalizada que estende a funcionalidade do UserCreationForm do Django.

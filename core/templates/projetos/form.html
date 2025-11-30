@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ titulo }} - Banda CESMAC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow border-0">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">{{ titulo }}</h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            
+                            {{ field }}
+                            
+                            {% if field.help_text %}
+                                <div class="form-text text-muted small">{{ field.help_text }}</div>
+                            {% endif %}
+                            
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2 mt-4 d-md-flex justify-content-md-end">
+                        <a href="{% url 'listar_projetos' %}" class="btn btn-outline-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-info text-white fw-bold">Salvar Projeto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

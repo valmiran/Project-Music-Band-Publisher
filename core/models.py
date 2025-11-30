@@ -5,12 +5,15 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 class Usuario(AbstractUser):
-    TIPO_USUÁRIO = [
-        ('ADMIN', 'Administrador'),
-        ('MEMBRO', 'Membro da Banda'),
+    TIPO_USUARIO = [
+        ('ADMIN', 'Super Admin'),
+        ('GESTOR', 'Gestor'),          
+        ('PROFESSOR', 'Professor'), 
+        ('MEMBRO', 'Membro da Banda'), 
         ('VISITANTE', 'Visitante'),
+
     ]
-    tipo = models.CharField(max_length=10, choices=TIPO_USUÁRIO, default='VISITANTE')
+    tipo = models.CharField(max_length=10, choices=TIPO_USUARIO, default='VISITANTE')
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -32,6 +35,9 @@ class Usuario(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.get_tipo_display()})"
     
+    @property
+    def is_gestor(self):
+        return self.tipo == 'GESTOR' or self.tipo == 'ADMIN' or self.is_superuser
     
 class Instrumento(models.Model):
     TIPO_INSTRUMENTO = [
