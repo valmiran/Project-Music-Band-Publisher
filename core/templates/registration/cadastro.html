@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro - Banda CESMAC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header navbar-custom text-white text-center">
+                <h4>Criar Nova Conta</h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text text-muted small">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-success">Confirmar Cadastro</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="card-footer text-center">
+                <small>Já tem conta? <a href="{% url 'login' %}">Faça login aqui</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
