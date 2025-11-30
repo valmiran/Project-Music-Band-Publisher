@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 class Usuario(AbstractUser):
     TIPO_USUÁRIO = [
         ('ADMIN', 'Administrador'),
-        ('MEBRO', 'Membro da Banda'),
+        ('MEMBRO', 'Membro da Banda'),
         ('VISITANTE', 'Visitante'),
     ]
     tipo = models.CharField(max_length=10, choices=TIPO_USUÁRIO, default='VISITANTE')

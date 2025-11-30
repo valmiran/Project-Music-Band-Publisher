@@ -35,11 +35,21 @@
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> Olá, {{ user.username }}
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                            data-bs-toggle="dropdown">
+                            {% if user.tipo != 'VISITANTE' and user.artista.foto_perfil %}
+                            <img src="{{ user.artista.foto_perfil.url }}" alt="Foto"
+                                class="rounded-circle me-2 border border-secondary"
+                                style="width: 32px; height: 32px; object-fit: cover;">
+                            {% else %}
+                            <i class="bi bi-person-circle me-2" style="font-size: 1.2rem;"></i>
+                            {% endif %}
+
+                            Olá, {{ user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#">Meu Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'meu_perfil' %}">Meu Perfil</a></li>
+                            <li><a class="dropdown-item" href="{% url 'editar_perfil' %}">Editar Dados</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

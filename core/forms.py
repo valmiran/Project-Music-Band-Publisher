@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Usuario
+from .models import Usuario,Artista
 
 class UsuarioCreationForm(UserCreationForm):
     class Meta:
@@ -15,7 +15,15 @@ class UsuarioCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    
+
+class ArtistaForm(forms.ModelForm):
+    class Meta:
+        model = Artista
+        fields = ['genero_musical', 'biografia', 'foto_perfil', 'instrumentos']
+        widgets = {
+            'biografia': forms.Textarea(attrs={'rows': 3}),
+            'instrumentos': forms.CheckboxSelectMultiple(), # Checkbox fica melhor para escolher vários
+        }
     
     
 ''' EXPLICAÇÃO SOBRE UsuarioCreationForm e UserCreationForm:

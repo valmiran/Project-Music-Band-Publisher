@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Perfil - Banda CESMAC{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header navbar-custom text-white">
+                <h4>🎸 Editar Perfil Artístico</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            
+                            {% if field.name == 'foto_perfil' and field.value %}
+                                <div class="mb-2">
+                                    <img src="{{ field.value.url }}" alt="Foto atual" class="img-thumbnail" style="max-height: 100px;">
+                                </div>
+                            {% endif %}
+                            
+                            <div class="{% if field.name == 'instrumentos' %} border p-2 rounded bg-light {% endif %}">
+                                {{ field }}
+                            </div>
+                            
+                            {% if field.help_text %}
+                                <div class="form-text text-muted">{{ field.help_text }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

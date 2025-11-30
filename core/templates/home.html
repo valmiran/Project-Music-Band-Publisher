@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Início - Banda CESMAC{% endblock %}
+
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow text-center">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Bem-vindo à Banda CESMAC! 🎶</h1>
+        <p class="col-md-8 fs-4 mx-auto">
+            Sua plataforma para gestão de projetos musicais, eventos e talentos.
+        </p>
+        
+        {% if user.is_authenticated %}
+            <hr class="my-4">
+            <p class="lead">Olá, <strong>{{ user.username }}</strong>! Seu perfil é: <span class="badge bg-info text-dark">{{ user.get_tipo_display }}</span></p>
+            
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'editar_perfil' %}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-person-gear"></i> Editar Meu Perfil
+                </a>
+                <button class="btn btn-outline-dark btn-lg">
+                    <i class="bi bi-music-note-beamed"></i> Ver Projetos
+                </button>
+            </div>
+        {% else %}
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4">Entrar</a>
+                <a href="{% url 'cadastro' %}" class="btn btn-outline-secondary btn-lg px-4">Cadastrar-se</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
