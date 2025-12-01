@@ -12,9 +12,9 @@
             <div class="card-body p-4">
                 <form method="post">
                     {% csrf_token %}
-                    
+
                     {% if form.errors %}
-                        <div class="alert alert-danger text-center">Usuário ou senha incorretos.</div>
+                    <div class="alert alert-danger text-center">Usuário ou senha incorretos.</div>
                     {% endif %}
 
                     <div class="mb-3">
@@ -30,6 +30,13 @@
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary">Entrar</button>
                     </div>
+
+                    <div class="text-end mt-2">
+                        <a href="{% url 'password_reset' %}" class="text-decoration-none small text-muted">
+                            Esqueci minha senha
+                        </a>
+                    </div>
+
                     <input type="hidden" name="next" value="{{ next }}">
                 </form>
             </div>
