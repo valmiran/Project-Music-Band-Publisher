@@ -19,4 +19,12 @@ urlpatterns = [
     path('projetos/novo/', views.criar_projeto, name='criar_projeto'),
     path('projetos/editar/<int:project_id>/', views.editar_projeto, name='editar_projeto'),
     path('projetos/excluir/<int:id>', views.excluir_projeto, name='excluir_projeto'),
+
+    path('pendencias/', views.listar_pendencias, name='listar_pendencias'),
+    path('pendecias/<str:tipo>/<int:id>/', views.aprovar_conteudo, name='aprovar_conteudo'),
+
+    path('editais/', views.listar_editais, name='listar_editais'),
+    path('editais/novo/', views.criar_edital, name='criar_edital'),
+    path('editais/editar/<int:id>/', views.editar_edital, name='editar_edital'),
+    path('editais/excluir/<int:id>/', views.excluir_edital, name='excluir_edital'),
 ]

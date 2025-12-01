@@ -140,3 +140,12 @@ AUTH_USER_MODEL = 'core.Usuario'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'
+
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%dT%H:%M:%S',     # Formato padrão HTML5 completo
+    '%Y-%m-%dT%H:%M',        # Formato padrão HTML5 sem segundos (o mais comum)
+    '%Y-%m-%d %H:%M:%S',     # Padrão banco de dados
+    '%Y-%m-%d %H:%M',        # Padrão simples
+    '%d/%m/%Y %H:%M:%S',     # Padrão brasileiro
+    '%d/%m/%Y %H:%M',        # Padrão brasileiro curto
+]

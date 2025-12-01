@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
-from .forms import UsuarioCreationForm, ArtistaForm, ProjetoForm, EventoForm
-from .models import Artista, Projeto, Usuario, Evento
+from .forms import UsuarioCreationForm, ArtistaForm, ProjetoForm, EventoForm, EditalForm
+from .models import Artista, Projeto, Usuario, Evento, Edital
 
 def home(request):
     return render(request, 'home.html')
@@ -18,6 +18,10 @@ def cadastro(request):
     else:
         form = UsuarioCreationForm()
     return render(request, 'registration/cadastro.html', {'form': form})
+
+def listar_editais(request):
+    editais = Edital.objects.all().order_by('data_abertura')
+    return render(request, 'editais/lista.html', {'editais': editais})
 
 @login_required # Só quem está logado acessa
 def editar_perfil(request):
@@ -64,7 +68,7 @@ def criar_projeto(request):
         if form.is_valid():
             projeto = form.save(commit=False)
             projeto.criado_por = request.user
-            #projeto.aprovar() 
+            projeto.aprovar() 
             projeto.save()
             messages.success(request, "Projeto criado com sucesso!")
             return redirect('listar_projetos')
@@ -110,7 +114,7 @@ def criar_evento(request):
         if form.is_valid():
             evento = form.save(commit=False)
             evento.criado_por = request.user
-            #evento.aprovar() 
+            evento.aprovar() 
             evento.save()
             messages.success(request, "Evento agendado com sucesso!")
             return redirect('listar_eventos')
@@ -167,6 +171,79 @@ def excluir_evento(request, id):
     
     messages.success(request, "Evento excluído com sucesso!")
     return redirect('listar_eventos')
+
+@user_passes_test(is_gestor_or_admin)
+def listar_pendencias(request):
+    
+    projetos = Projeto.objects.filter(pending_approval=True)
+    eventos = Evento.objects.filter(pending_approval=True)
+
+    return render(request, 'aprovacoes.html', {
+        'projetos': projetos,
+        'eventos': eventos,
+        'total': projetos.count() + eventos.count()
+    })
+
+@user_passes_test(is_gestor_or_admin)
+def aprovar_conteudo(request, tipo, id):
+    item = None
+
+    if tipo == 'projeto':
+        item = get_object_or_404(Projeto, id=id)
+    elif tipo == 'evento':
+        item = get_object_or_404(Evento, id=id)
+
+    if item:
+        item.aprovar()
+        messages.success(request, f"{item.titulo} aprovado com sucesso!")
+    else:
+        messages.error(request, "Erro: Tipo de conteúdo inválido para aprovação.")
+
+    return redirect('listar_pendencias')
+
+@user_passes_test(can_create_content)
+def criar_edital(request):
+    if request.method == 'POST':
+        form = EditalForm(request.POST, request.FILES)
+        if form.is_valid():
+            edital = form.save(commit=False)
+            edital.criado_por = request.user
+            edital.save()
+            messages.success(request, "Edital publicado com sucesso!")
+            return redirect('listar_editais')
+        else:
+            print("❌ ERROS DE VALIDAÇÃO:", form.errors)
+    else:
+        form = EditalForm()
+
+    return render(request, 'editais/form.html', {'form': form, 'titulo': 'Publicar Novo Edital'})
+
+# ... (imports anteriores) ...
+
+@user_passes_test(can_create_content)
+def editar_edital(request, id):
+    edital = get_object_or_404(Edital, id=id)
+    
+    if request.method == 'POST':
+        # request.FILES é necessário caso troque o PDF
+        form = EditalForm(request.POST, request.FILES, instance=edital)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Edital atualizado com sucesso!")
+            return redirect('listar_editais')
+    else:
+        form = EditalForm(instance=edital)
+    
+    return render(request, 'editais/form.html', {'form': form, 'titulo': 'Editar Edital'})
+
+@user_passes_test(can_create_content)
+def excluir_edital(request, id):
+    edital = get_object_or_404(Edital, id=id)
+    edital.delete()
+    messages.success(request, "Edital excluído com sucesso!")
+    return redirect('listar_editais')
+
+
 
 """Resumo Técnico das Views"""
 

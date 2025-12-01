@@ -45,7 +45,7 @@
                 <div class="card-body">
                     <h5 class="card-title text-warning">Aprovações Pendentes</h5>
                     <p class="card-text text-muted">Existem conteúdos criados por alunos aguardando revisão.</p>
-                    <a href="#" class="btn btn-warning text-dark w-100 disabled">Ver Pendências (Em breve)</a>
+                    <a href="{% url 'listar_pendencias' %}" class="btn btn-warning text-dark w-100">Ver Pendências</a>
                 </div>
             </div>
         </div>
@@ -55,11 +55,14 @@
                 <div class="card-body">
                     <h5 class="card-title text-primary">Gestão de Editais</h5>
                     <p class="card-text text-muted">Lance novos editais de seleção para a banda.</p>
-                    <a href="#" class="btn btn-primary w-100 disabled">Novo Edital (Em breve)</a>
+
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'criar_edital' %}" class="btn btn-primary">Novo Edital</a>
+                        <a href="{% url 'listar_editais' %}" class="btn btn-outline-primary">Ver Editais</a>
+                    </div>
                 </div>
             </div>
         </div>
-
         <div class="col-md-4">
             <div class="card shadow-sm border-start border-success border-4 h-100">
                 <div class="card-body">
@@ -73,7 +76,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-4">
             <div class="card shadow-sm border-start border-info border-4 h-100">
                 <div class="card-body">

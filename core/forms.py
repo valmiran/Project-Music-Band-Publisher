@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Usuario, Artista, Projeto, Evento
+from .models import Usuario, Artista, Projeto, Evento, Edital
 
 class UsuarioCreationForm(UserCreationForm):
     class Meta:
@@ -42,7 +42,7 @@ class EventoForm(forms.ModelForm):
         model = Evento
         fields = ['titulo', 'descricao', 'data', 'local', 'status', 'projeto']
         widgets = {
-            'data': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'data': forms.DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'type': 'datetime-local', 'class': 'form-control'}),
             'descricao': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
             'local': forms.TextInput(attrs={'class': 'form-control'}),
@@ -50,6 +50,18 @@ class EventoForm(forms.ModelForm):
             'projeto': forms.Select(attrs={'class': 'form-select'}),
         }
 
+class EditalForm(forms.ModelForm):
+    class Meta:
+        model = Edital
+        fields = ['titulo', 'conteudo', 'arquivo_pdf', 'data_abertura', 'data_fechamento', 'ativo']
+        widgets = {
+            'data_abertura': forms.DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'data_fechamento': forms.DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'conteudo': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
+            'arquivo_pdf': forms.FileInput(attrs={'class': 'form-control'}),
+            'ativo': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
 
 ''' EXPLICAÇÃO SOBRE UsuarioCreationForm e UserCreationForm:
 1º O que é UsuarioCreationForm?

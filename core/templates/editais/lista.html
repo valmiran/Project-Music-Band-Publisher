@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Editais - Banda CESMAC{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-file-earmark-pdf"></i> Processos Seletivos</h2>
+
+        {% if user.tipo == 'PROFESSOR' or user.tipo == 'ADMIN' or user.tipo == 'GESTOR' or user.is_superuser %}
+        <a href="{% url 'criar_edital' %}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Novo Edital
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="row g-4">
+        {% for edital in editais %}
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm {% if not edital.ativo %}border-danger bg-light{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="d-flex align-items-center gap-2">
+                            <h5 class="card-title text-primary fw-bold mb-0">{{ edital.titulo }}</h5>
+
+                            {% if user.tipo == 'PROFESSOR' or user.tipo == 'ADMIN' or user.tipo == 'GESTOR' or user.is_superuser %}
+                                <div class="d-flex">
+                                    <a href="{% url 'editar_edital' edital.id %}"
+                                        class="btn btn-link text-secondary p-0 ms-2" title="Editar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+
+                                    <a href="{% url 'excluir_edital' edital.id %}" class="btn btn-link text-danger p-0 ms-2"
+                                        title="Excluir"
+                                        onclick="return confirm('Tem certeza que deseja apagar este edital?');">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        {% if edital.ativo %}
+                            <span class="badge bg-success">Aberto</span>
+                        {% else %}
+                            <span class="badge bg-danger">Encerrado</span>
+                        {% endif %}
+                    </div>
+
+                    <p class="card-text mt-3">{{ edital.conteudo|linebreaks|truncatechars:150 }}</p>
+
+                    <div class="text-muted small mb-3">
+                        <i class="bi bi-calendar-range"></i> Período: {{ edital.data_abertura|date:"d/m" }} até {{edital.data_fechamento|date:"d/m/Y" }}
+                    </div>
+
+                    {% if edital.arquivo_pdf %}
+                    <a href="{{ edital.arquivo_pdf.url }}" class="btn btn-outline-danger btn-sm" target="_blank">
+                        <i class="bi bi-file-pdf"></i> Baixar Edital (PDF)
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary btn-sm" disabled>PDF Indisponível</button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted fs-4">Nenhum edital publicado no momento.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -70,12 +70,21 @@ class Projeto(models.Model):
         ('CONCLUIDO', 'Concluído'),
         ('CANCELADO', 'Cancelado'),
     ]
+    
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
     data_inicio = models.DateField()
     data_fim = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=10, choices=STATUS_PROJETO, default='ANDAMENTO')
     criado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='projetos_criados')
+
+    is_public = models.BooleanField(default=False, verbose_name="Público?")
+    pending_approval = models.BooleanField(default=True, verbose_name="Pendente de Aprovação?")
+
+    def aprovar(self):
+        self.is_public = True
+        self.pending_approval = False
+        self.save()
 
     def __str__(self):
         return self.titulo
@@ -86,6 +95,7 @@ class Evento(models.Model):
         ('REALIZADO', 'Realizado'),
         ('CANCELADO', 'Cancelado'),
     ]
+
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
     data = models.DateTimeField()
@@ -93,6 +103,14 @@ class Evento(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_EVENTO, default='PLANEJADO')
     projeto = models.ForeignKey(Projeto, on_delete=models.SET_NULL, null=True, blank=True)
     criado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, related_name='eventos_criados')
+
+    is_public = models.BooleanField(default=False, verbose_name="Público?")
+    pending_approval = models.BooleanField(default=True, verbose_name="Pendente de Aprovação?")
+
+    def aprovar(self):
+        self.is_public = True
+        self.pending_approval = False
+        self.save()
 
     def __str__(self):
         return self.titulo
@@ -117,3 +135,26 @@ class Notificacao(models.Model):
 
     def __str__(self):
         return f"Notificação para {self.usuario_destinatario.username}"
+    
+class Edital(models.Model):
+    titulo = models.CharField(max_length=200, default="Edital de Seleção")
+    conteudo = models.TextField()
+    arquivo_pdf = models.FileField(upload_to='editais/', null=True, blank=True) # Requer Pillow instalado
+    data_abertura = models.DateTimeField()
+    data_fechamento = models.DateTimeField()
+    ativo = models.BooleanField(default=True)
+    criado_por = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.titulo
+
+class Inscricao(models.Model):
+    edital = models.ForeignKey(Edital, on_delete=models.CASCADE, related_name='inscricoes')
+    candidato = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    mensagem = models.TextField()
+    video_demonstracao = models.URLField(blank=True, null=True)
+    data_inscricao = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=[('PENDENTE', 'Pendente'), ('APROVADO', 'Aprovado')], default='PENDENTE')
+
+    def __str__(self):
+        return f"Inscrição: {self.candidato}"
