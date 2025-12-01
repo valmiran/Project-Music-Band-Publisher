@@ -1,39 +1,152 @@
-/* 
-    static/css/style.css 
-   
-    Fundo suave para o site
-*/
+/* IMPORTAR FONTE (Poppins) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    /* --- PALETA CESMAC --- */
+    --cesmac-bg: #003366;       /* Azul Escuro Institucional */
+    --cesmac-sidebar: #002244;  /* Azul Mais Escuro */
+    --cesmac-yellow: #FFC107;   /* Amarelo Ouro */
+    --cesmac-yellow-hover: #FFCA28;
+    
+    --cesmac-white: #FFFFFF;
+    --cesmac-text: #2D3748;
+}
 
 body {
-    background-color: #f0f2f5;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: var(--cesmac-bg);
+    font-family: 'Poppins', sans-serif;
+    color: var(--cesmac-text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- ESTRUTURA --- */
+.wrapper {
     display: flex;
-    flex-direction: column;
+    width: 100%;
     min-height: 100vh;
 }
 
-main {
-    flex: 1;
+/* --- SIDEBAR --- */
+#sidebar {
+    min-width: 260px;
+    max-width: 260px;
+    background: var(--cesmac-sidebar);
+    color: #fff;
+    transition: all 0.3s;
+    border-right: 1px solid rgba(255,255,255,0.1);
 }
 
-.navbar-custom {
-    background-color: #2c3e50 !important;
+#sidebar .sidebar-header {
+    padding: 30px 20px;
+    background: rgba(0,0,0,0.2);
+    text-align: center;
 }
 
-.card {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-}
-
-/*
-.card:hover {
-    transform: translateY(-5px);
-}
-*/
-
-.footer {
-    background-color: #2c3e50;
-    color: #bdc3c7;
+#sidebar ul.components {
     padding: 20px 0;
+}
+
+#sidebar ul li a {
+    padding: 15px 25px;
+    font-size: 1em;
+    display: block;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: 0.3s;
+    border-left: 4px solid transparent;
+}
+
+#sidebar ul li a:hover, #sidebar ul li.active > a {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--cesmac-yellow);
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
+#content {
+    width: 100%;
+    padding: 40px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    background-color: #F8F9FA; /* Branco Gelo Suave */
+    color: var(--cesmac-text);
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    box-shadow: inset 10px 0 20px rgba(0,0,0,0.05); /* Sombra interna sutil */
+
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--cesmac-sidebar);
+    font-weight: 700;
+}
+
+/* --- CARDS --- */
+.card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Sombra mais leve */
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 15px;
+    background-color: var(--cesmac-white);
+    margin-bottom: 25px;
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 2px solid #f0f0f0;
+    font-weight: 700;
+    color: var(--cesmac-bg);
+    padding: 1.5rem;
+    border-radius: 15px 15px 0 0 !important;
+}
+
+/* --- BOTÕES --- */
+.btn-primary, .btn-success {
+    background-color: var(--cesmac-yellow) !important;
+    border-color: var(--cesmac-yellow) !important;
+    color: #002244 !important; /* Texto escuro para contraste */
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-success:hover {
+    background-color: var(--cesmac-yellow-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.btn-outline-light {
+    border-radius: 50px;
+    padding: 10px 30px;
+    font-weight: 600;
+    border-width: 2px;
+}
+
+.btn-outline-light:hover {
+    background-color: white;
+    color: var(--cesmac-bg);
+}
+
+/* Link Genérico */
+a {
+    color: var(--cesmac-yellow);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--cesmac-yellow-hover);
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    #sidebar { margin-left: -260px; }
+    #sidebar.active { margin-left: 0; }
+    #content { padding: 20px; }
 }

@@ -1,167 +1,198 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Dashboard - Banda CESMAC{% endblock %}
+{% block title %}Início - Banda CESMAC{% endblock %}
 
 {% block content %}
-<div class="container py-4">
 
-    {% if user.is_authenticated %}
-    <div class="row mb-4 align-items-center">
-        <div class="col-md-8">
-            <h1 class="display-6 fw-bold text-dark">
-                Olá, {{ user.first_name|default:user.username }}! 👋
-            </h1>
-            <p class="text-muted">
-                Painel de controle: <span class="badge bg-secondary">{{ user.get_tipo_display }}</span>
-            </p>
-        </div>
-        <div class="col-md-4 text-end">
-            {% if user.tipo == 'MEMBRO' or user.tipo == 'PROFESSOR' %}
-            <a href="{% url 'meu_perfil' %}" class="btn btn-outline-dark btn-sm">
-                <i class="bi bi-person-badge"></i> Ver meu Crachá
-            </a>
-            {% endif %}
-        </div>
-    </div>
-    <hr>
-    {% endif %}
+    {% if user.tipo == 'PROFESSOR' or user.tipo == 'ADMIN' or user.tipo == 'GESTOR' or user.is_superuser %}
+        <div class="container">
+            <div class="row mb-4 align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-6 fw-bold">
+                        Olá, {{ user.first_name|default:user.username }}
+                    </h1>
+                    <p class="text-muted">
+                        Painel de controle: <span class="badge bg-secondary">{{ user.get_tipo_display }}</span>
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    {% if user.tipo == 'PROFESSOR' %}
+                        <a href="{% url 'meu_perfil' %}" class="btn btn-outline-dark btn-sm">
+                            <i class="bi bi-person-badge"></i> Ver meu Crachá
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            <hr>
 
+            <div class="row g-4">
+                <div class="col-12">
+                    <h4 class="text-primary">
+                        <i class="bi bi-shield-lock"></i>
+                        {% if user.tipo == 'ADMIN' or user.tipo == 'GESTOR' or user.is_superuser %}
+                            Área Administrativa
+                        {% else %}
+                            Área do Professor
+                        {% endif %}
+                    </h4>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-start border-warning border-4 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">Aprovações Pendentes</h5>
+                            <p class="card-text text-muted">Existem conteúdos aguardando revisão.</p>
+                            <a href="{% url 'listar_pendencias' %}" class="btn btn-warning text-dark w-100">Ver Pendências</a>
+                        </div>
+                    </div>
+                </div>
 
-    {% if user.tipo == 'GESTOR' or user.tipo == 'ADMIN' or user.is_superuser %}
-    <div class="row g-4">
-        <div class="col-12">
-            <h4 class="text-primary">
-                <i class="bi bi-shield-lock"></i>
-                {% if user.tipo == 'GESTOR' or user.is_superuser %}
-                Área Administrativa
-                {% else %}
-                Área do Professor
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-start border-primary border-4 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Gestão de Editais</h5>
+                            <p class="card-text text-muted">Lance novos editais de seleção.</p>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'criar_edital' %}" class="btn btn-primary">Novo Edital</a>
+                                <a href="{% url 'listar_editais' %}" class="btn btn-outline-primary">Ver Editais</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-start border-success border-4 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Novo Evento</h5>
+                            <p class="card-text text-muted">Agende ensaios ou apresentações.</p>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'criar_evento' %}" class="btn btn-success">Criar Evento</a>
+                                <a href="{% url 'listar_eventos' %}" class="btn btn-outline-success">Ver Agenda</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-start border-info border-4 h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-info">Projetos Musicais</h5>
+                            <p class="card-text text-muted">Gerencie o portfólio da banda.</p>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'criar_projeto' %}" class="btn btn-info text-white">Novo Projeto</a>
+                                <a href="{% url 'listar_projetos' %}" class="btn btn-outline-info">Ver Lista</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if user.tipo == 'GESTOR' or user.tipo == 'ADMIN' or user.is_superuser %}
+                    <div class="col-md-4">
+                        <div class="card shadow-sm border-start border-dark border-4 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-dark">Gestão de Equipe</h5>
+                                <p class="card-text text-muted">Promova alunos e gerencie cargos.</p>
+                                <a href="{% url 'gerenciar_equipe' %}" class="btn btn-dark w-100">Gerenciar Usuários</a>
+                            </div>
+                        </div>
+                    </div>
                 {% endif %}
-            </h4>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-start border-warning border-4 h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-warning">Aprovações Pendentes</h5>
-                    <p class="card-text text-muted">Existem conteúdos criados por alunos aguardando revisão.</p>
-                    <a href="{% url 'listar_pendencias' %}" class="btn btn-warning text-dark w-100">Ver Pendências</a>
-                </div>
             </div>
         </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-start border-primary border-4 h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Gestão de Editais</h5>
-                    <p class="card-text text-muted">Lance novos editais de seleção para a banda.</p>
-
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'criar_edital' %}" class="btn btn-primary">Novo Edital</a>
-                        <a href="{% url 'listar_editais' %}" class="btn btn-outline-primary">Ver Editais</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm border-start border-success border-4 h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-success">Novo Evento</h5>
-                    <p class="card-text text-muted">Agende ensaios ou apresentações oficiais.</p>
-
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'criar_evento' %}" class="btn btn-success">Criar Evento</a>
-                        <a href="{% url 'listar_eventos' %}" class="btn btn-outline-success">Ver Agenda</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-start border-info border-4 h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Projetos Musicais</h5>
-                    <p class="card-text text-muted">Gerencie o portfólio de projetos da banda.</p>
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'criar_projeto' %}" class="btn btn-info text-white">Novo Projeto</a>
-                        <a href="{% url 'listar_projetos' %}" class="btn btn-outline-info">Ver Lista</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card shadow-sm border-start border-dark border-4 h-100">
-                <div class="card-body">
-                    <h5 class="card-title text-dark">Gestão de Equipe</h5>
-                    <p class="card-text text-muted">Promova alunos a membros ou adicione novos professores.</p>
-                    <a href="{% url 'gerenciar_equipe' %}" class="btn btn-dark w-100">Gerenciar Usuários</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {% elif user.tipo == 'MEMBRO' %}
-    <div class="row g-4">
-        <div class="col-12">
-            <h4 class="text-success"><i class="bi bi-music-player"></i> Área do Músico</h4>
-        </div>
+        <div class="container">
+            <div class="row mb-4 align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-6 fw-bold">
+                        Olá, {{ user.first_name|default:user.username }}
+                    </h1>
+                    <p class="text-muted">
+                        Painel de controle: <span class="badge bg-success">{{ user.get_tipo_display }}</span>
+                    </p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <a href="{% url 'meu_perfil' %}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-person-badge"></i> Ver meu Crachá
+                    </a>
+                </div>
+            </div>
+            <hr>
 
-        <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-folder2-open fs-1 text-success"></i>
-                    <h5 class="card-title mt-2">Meus Projetos</h5>
-                    <p>Acesse os projetos que você participa.</p>
-                    <a href="#" class="btn btn-outline-success">Acessar</a>
+            <div class="row g-4">
+                <div class="col-12"><h4 class="text-success"><i class="bi bi-music-player"></i> Área do Músico</h4></div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-folder2-open fs-1 text-success"></i>
+                            <h5 class="card-title mt-2">Meus Projetos</h5>
+                            <p>Acesse os projetos que você participa.</p>
+                            <a href="{% url 'listar_projetos' %}" class="btn btn-outline-success">Acessar</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body text-center">
+                            <i class="bi bi-calendar-event fs-1 text-info"></i>
+                            <h5 class="card-title mt-2">Agenda de Ensaios</h5>
+                            <p>Confira as datas das próximas apresentações.</p>
+                            <a href="{% url 'listar_eventos' %}" class="btn btn-outline-info">Ver Calendário</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-6">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <i class="bi bi-calendar-event fs-1 text-info"></i>
-                    <h5 class="card-title mt-2">Agenda de Ensaios</h5>
-                    <p>Confira as datas das próximas apresentações.</p>
-                    <a href="{% url 'listar_eventos' %}" class="btn btn-outline-info">Ver Calendário</a>
-                </div>
-            </div>
-        </div>
-    </div>
 
     {% else %}
-    <div class="p-5 mb-4 bg-light rounded-3 text-center border">
-        <h1 class="display-5 fw-bold mb-3">Bem-vindo à Banda CESMAC! 🎶</h1>
+        
+        <div class="d-flex flex-column align-items-center justify-content-center text-center py-5">
+            
+            <img src="{% static 'img/logo-centro.png' %}" 
+                 alt="Logo CESMAC" 
+                 class="img-fluid mb-4" 
+                 style="max-width: 350px;">
+            
+            <h1 class="display-5 fw-bold mb-3" style="color: #003366;">
+                Sistema de Gestão Musical
+            </h1>
+            
+            <p class="lead text-muted mb-5" style="max-width: 600px; font-weight: 500;">
+                Plataforma oficial para gerenciamento de projetos, eventos e processos seletivos da Banda CESMAC.
+            </p>
+            
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-5 shadow">Entrar</a>
+                <a href="{% url 'cadastro' %}" class="btn btn-outline-dark btn-lg px-5">Criar Conta</a>
+            </div>
 
-        {% if not user.is_authenticated %}
-        <p class="fs-4 text-muted mb-4">Faça login para acessar suas ferramentas.</p>
-        <div class="d-flex justify-content-center gap-3">
-            <a href="{% url 'login' %}" class="btn btn-primary btn-lg px-4">Entrar</a>
-            <a href="{% url 'cadastro' %}" class="btn btn-outline-secondary btn-lg px-4">Cadastrar-se</a>
         </div>
-        {% else %}
-        <div class="alert alert-info mt-3 d-inline-block">
-            <i class="bi bi-info-circle"></i> Sua conta é de <strong>Visitante</strong>.
-            Aguarde um professor te adicionar à banda ou inscreva-se nos editais abertos.
+        
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-8 text-center">
+                <h4 class="border-bottom pb-2 mb-4 d-inline-block px-4" 
+                    style="color: #003366; border-color: #003366 !important;">
+                    Últimas Atualizações
+                </h4>
+            </div>
         </div>
-        {% endif %}
-    </div>
-
-    <div class="row mt-5">
-        <h3 class="border-bottom pb-2 mb-4">Últimas Notícias</h3>
-        <div class="col-md-4">
-            <div class="card h-100 border-0 shadow-sm">
-                <img src="https://via.placeholder.com/300x150" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Abertura de Vagas</h5>
-                    <p class="card-text small">Confira o edital para novos bateristas...</p>
-                    <a href="#" class="text-decoration-none stretched-link">Ler mais</a>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg" style="border-radius: 20px; overflow: hidden; background-color: #f8f9fa;">
+                    <div class="card-body p-4">
+                        <span class="badge bg-warning text-dark mb-2">Novidade</span>
+                        <h5 class="card-title text-dark fw-bold">Abertura de Vagas</h5>
+                        <p class="card-text text-muted small">Confira os editais abertos para novos integrantes.</p>
+                        <a href="{% url 'listar_editais' %}" class="btn btn-sm btn-outline-primary mt-2">Ler Editais</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
     {% endif %}
 
-</div>
 {% endblock %}
